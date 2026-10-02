@@ -1,0 +1,13 @@
+{
+  "name": "tavus-video-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A webpage where visitors start a live video call with a Tavus AI agent.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
