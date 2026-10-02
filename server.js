@@ -38,13 +38,17 @@ async function startCall() {
       body: JSON.stringify(body),
     });
 
+  console.log(`[tavus] asking for a call  persona=${PERSONA_ID} replica=${REPLICA_ID}`);
   let res = await send({ ...shared, persona_id: PERSONA_ID, replica_id: REPLICA_ID });
+  console.log(`[tavus] first try -> ${res.status}`);
   // Newer Tavus docs also use pal_id / face_id. Try those if the first way is rejected.
   if (res.status === 400 || res.status === 422) {
     const retry = await send({ ...shared, pal_id: PERSONA_ID, face_id: REPLICA_ID });
+    console.log(`[tavus] retry with pal_id/face_id -> ${retry.status}`);
     if (retry.ok) res = retry;
   }
   const data = await res.json().catch(() => ({}));
+  console.log("[tavus] full reply:", JSON.stringify(data));
   if (!res.ok || !data.conversation_url) {
     throw new Error(data.message || data.error || `Tavus said ${res.status}`);
   }
